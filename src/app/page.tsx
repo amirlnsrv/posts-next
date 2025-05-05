@@ -33,7 +33,12 @@ export default function Blog(): JSX.Element {
     <div className={styles.blog}>
       <h1 className="text-center text-3xl font-bold">Список постов</h1>
       {posts.map((item) => (
-        <BlogItem key={item.id} title={item.title} body={item.body} />
+        <BlogItem
+          key={item.id}
+          title={item.title}
+          body={item.body}
+          id={item.id}
+        />
       ))}
 
       <button onClick={() => setPage((prev) => Math.max(prev - 1, 1))}>

@@ -1,17 +1,23 @@
+"use client";
+
 import React from "react";
 
 import styles from "./BlogItem.module.css";
 import { Button } from "@/ui/Button";
+import { useRouter } from "next/navigation";
 
 interface BlogItemProps {
   title: string;
   body: string;
+  id: number;
 }
 
-export const BlogItem: React.FC<BlogItemProps> = ({ title, body }) => {
+export const BlogItem: React.FC<BlogItemProps> = ({ title, body, id }) => {
+  const router = useRouter();
+
   return (
     <div className={styles.post}>
-      <div className={styles.postBody}>
+      <div className={`${styles.postBody} cursor-pointer`} onClick={() => router.push(`/${id}`)}>
         <h2>{title}</h2>
         <p>{body}</p>
       </div>
