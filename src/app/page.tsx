@@ -1,6 +1,5 @@
 "use client";
 
-import { BASE_URL } from "@/baseUrl";
 import React, { JSX, useEffect, useState } from "react";
 
 import styles from "./Home.module.css";
@@ -15,7 +14,7 @@ export default function Blog(): JSX.Element {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const res = await fetch(`${BASE_URL}?_page=${page}&_limit=${limit}`);
+        const res = await fetch(`/api/posts?_page=${page}&_limit=${limit}`);
         if (!res.ok) {
           throw new Error(`Ошибка: ${res.status}`);
         }
