@@ -5,7 +5,9 @@ import React from "react";
 
 import styles from "./Home.module.css";
 
-export default function Blog() {
+
+
+export default function Blog(){
   const [posts, setPosts] = React.useState([]);
 
   React.useEffect(() => {
