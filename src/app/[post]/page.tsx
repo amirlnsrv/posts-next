@@ -19,16 +19,13 @@ async function getPost(postId: string): Promise<Post> {
   return res.json();
 }
 
-export default async function PostDeatail({ params: { post } }: Props) {
+export default async function PostDetail({ params: { post } }: Props) {
   const postData = await getPost(post);
 
   return (
     <div>
-      <h1>Post {post}</h1>
       <p>{postData.title}</p>
       <p>{postData.body}</p>
-      <p>User ID: {postData.userId}</p>
-      <p>ID: {postData.id}</p>
     </div>
   );
 }
