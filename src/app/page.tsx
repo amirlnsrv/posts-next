@@ -4,6 +4,7 @@ import { BASE_URL } from "@/baseUrl";
 import React from "react";
 
 import styles from "./Home.module.css";
+import { BlogItem } from "@/components/BlogItem";
 
 export default function Blog() {
   const [posts, setPosts] = React.useState([]);
@@ -26,10 +27,7 @@ export default function Blog() {
   return (
     <div className={styles.blog}>
       {posts.map((item) => (
-        <div key={item.id} className={styles.post}>
-          <h2>{item.title}</h2>
-          <p>{item.body}</p>
-        </div>
+        <BlogItem key={item.id} title={item.title} body={item.body} />
       ))}
     </div>
   );
