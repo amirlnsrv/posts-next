@@ -1,3 +1,8 @@
+.post {
+	border-bottom: 1px solid #333;
+	padding-bottom: 10px;
+}
+
 .post h2 {
 	font-size: 24px;
 	font-weight: 500;
@@ -5,4 +10,14 @@
 
 .post p {
 	font-size: 18px;
+	width: 50%;
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+
+.postButtons {
+	display: flex;
+	justify-content: flex-end;
+	gap: 10px;
 }
