@@ -5,19 +5,17 @@ import React from "react";
 import styles from "./BlogItem.module.css";
 import { Button } from "@/ui/Button";
 import { useRouter } from "next/navigation";
+import { Post } from "@/types/postType";
 
-interface BlogItemProps {
-  title: string;
-  body: string;
-  id: number;
-}
-
-export const BlogItem: React.FC<BlogItemProps> = ({ title, body, id }) => {
+export const BlogItem: React.FC<Post> = ({ title, body, id }) => {
   const router = useRouter();
 
   return (
     <div className={styles.post}>
-      <div className={`${styles.postBody} cursor-pointer`} onClick={() => router.push(`/${id}`)}>
+      <div
+        className={`${styles.postBody} cursor-pointer`}
+        onClick={() => router.push(`/${id}`)}
+      >
         <h2>{title}</h2>
         <p>{body}</p>
       </div>
