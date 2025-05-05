@@ -52,10 +52,10 @@ export default function Blog(): JSX.Element {
         <button
           key={i}
           onClick={() => setPage(i)}
-          className={`px-4 py-2 rounded font-semibold cursor-pointer ${
+          className={`px-4 py-2 rounded border font-semibold ${
             page === i
-              ? "bg-blue-600 text-white"
-              : "bg-gray-200 hover:bg-gray-300"
+              ? "bg-blue-500 text-white border-blue-500"
+              : "text-blue-700 border-blue-400 hover:bg-blue-100 hover:text-blue-600"
           }`}
         >
           {i}
@@ -93,7 +93,11 @@ export default function Blog(): JSX.Element {
         {page > 1 && (
           <button
             onClick={() => setPage(1)}
-            className="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded font-semibold cursor-pointer"
+            className={`px-4 py-2 rounded border font-semibold ${
+              page === 1
+                ? "border-blue-200 text-blue-200 cursor-not-allowed"
+                : "border-blue-400 text-blue-700 hover:bg-blue-100 hover:text-blue-600 cursor-pointer"
+            }`}
           >
             «
           </button>
@@ -101,10 +105,10 @@ export default function Blog(): JSX.Element {
         <button
           onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
           disabled={page === 1}
-          className={`px-4 py-2 rounded font-semibold ${
+          className={`px-4 py-2 rounded border font-semibold ${
             page === 1
-              ? "bg-gray-300 cursor-not-allowed"
-              : "bg-gray-200 hover:bg-gray-300 cursor-pointer"
+              ? "border-blue-200 text-blue-200 cursor-not-allowed"
+              : "border-blue-400 text-blue-700 hover:bg-blue-100 hover:text-blue-600 cursor-pointer"
           }`}
         >
           ‹
@@ -115,10 +119,10 @@ export default function Blog(): JSX.Element {
         <button
           onClick={() => setPage((prev) => Math.min(prev + 1, totalPages))}
           disabled={page === totalPages}
-          className={`px-4 py-2 rounded font-semibold ${
+          className={`px-4 py-2 rounded border font-semibold ${
             page === totalPages
-              ? "bg-gray-300 cursor-not-allowed"
-              : "bg-gray-200 hover:bg-gray-300 cursor-pointer"
+              ? "border-blue-200 text-blue-200 cursor-not-allowed cok"
+              : "border-blue-400 text-blue-700 hover:bg-blue-100 hover:text-blue-600 cursor-pointer"
           }`}
         >
           ›
@@ -126,7 +130,7 @@ export default function Blog(): JSX.Element {
         {page < totalPages && (
           <button
             onClick={() => setPage(totalPages)}
-            className="px-4 py-2 bg-gray-200 hover:bg-gray-300 rounded font-semibold cursor-pointer"
+            className="px-4 py-2 rounded border border-blue-400 text-blue-700 hover:bg-blue-100 hover:text-blue-600 font-semibold cursor-pointer"
           >
             »
           </button>
