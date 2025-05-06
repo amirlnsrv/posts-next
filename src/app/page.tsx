@@ -16,6 +16,12 @@ export default function Blog(): JSX.Element {
   const [body, setBody] = useState("");
   const limit = 20;
 
+  const newPost = {
+    id: Date.now(),
+    title,
+    body,
+  };
+
   useEffect(() => {
     const fetchData = async () => {
       setIsLoading(true);
@@ -29,7 +35,7 @@ export default function Blog(): JSX.Element {
 
         setPosts(data);
       } catch (error) {
-        console.error("Ошибка при загрузке данных:", error);
+        console.error("Ошибка при загрузке :", error);
       } finally {
         setIsLoading(false);
       }
@@ -103,10 +109,10 @@ export default function Blog(): JSX.Element {
           e.preventDefault();
           if (!title.trim() || !body.trim()) return;
 
-          const newPost = {
-            title,
-            body,
-          };
+          // const newPost = {
+          //   title,
+          //   body,
+          // };
 
           try {
             const res = await fetch("http://localhost:5000/posts", {
@@ -144,7 +150,11 @@ export default function Blog(): JSX.Element {
           onChange={(e) => setBody(e.target.value)}
           required
         />
-        <button className="bg-green-600 text-white p-2 rounded" type="submit">
+        <button
+          onClick={handleSubmit}
+          className="bg-green-600 text-white p-2 rounded"
+          type="submit"
+        >
           Добавить пост
         </button>
       </form>
@@ -156,9 +166,9 @@ export default function Blog(): JSX.Element {
 
       {!isLoading && posts.length > 0 && (
         <div className="space-y-4 my-6">
-          {posts.map((item) => (
+          {posts.map((item, index) => (
             <BlogItem
-              key={item.id}
+              key={index}
               title={item.title}
               body={item.body}
               id={item.id}
