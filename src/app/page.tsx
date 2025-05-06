@@ -6,6 +6,7 @@ import { Loader } from "@/components/Loader";
 import styles from "./Home.module.css";
 import { BlogItem } from "@/components/BlogItem";
 import { Post } from "@/types/postType";
+import { Pagination } from "@/components/Pagination";
 
 export default function Blog(): JSX.Element {
   const [isLoading, setIsLoading] = useState(false);
@@ -26,11 +27,11 @@ export default function Blog(): JSX.Element {
     const fetchData = async () => {
       setIsLoading(true);
       try {
-        const res = await fetch(`${BASE_URL}?_page=${page}&_limit=${limit}`);
+        const res = await fetch(`/api/posts?_page=${page}&_limit=${limit}`);
         if (!res.ok) throw new Error(`Ошибка: ${res.status}`);
         const data: Post[] = await res.json();
 
-        const total = Number(res.headers.get("X-Total-Count")) || 0;
+        const total = 100;
         setTotalPages(Math.ceil(total / limit));
 
         setPosts(data);
@@ -69,35 +70,6 @@ export default function Blog(): JSX.Element {
     } catch (error) {
       console.error("Ошибка добавления:", error);
     }
-  };
-
-  const renderPageNumbers = () => {
-    const pages = [];
-    const maxShown = 5;
-    let start = Math.max(1, page - 2);
-    const end = Math.min(totalPages, start + maxShown - 1);
-
-    if (end - start < maxShown - 1) {
-      start = Math.max(1, end - maxShown + 1);
-    }
-
-    for (let i = start; i <= end; i++) {
-      pages.push(
-        <button
-          key={i}
-          onClick={() => setPage(i)}
-          className={`px-4 py-2 rounded border font-semibold ${
-            page === i
-              ? "bg-blue-500 text-white border-blue-500"
-              : "text-blue-700 border-blue-400 hover:bg-blue-100 hover:text-blue-600"
-          }`}
-        >
-          {i}
-        </button>
-      );
-    }
-
-    return pages;
   };
 
   return (
@@ -177,53 +149,8 @@ export default function Blog(): JSX.Element {
         </div>
       )}
 
-      <div className="flex flex-wrap justify-center items-center gap-2 mt-8 text-lg">
-        {page > 1 && (
-          <button
-            onClick={() => setPage(1)}
-            className={`px-4 py-2 rounded border font-semibold ${
-              page === 1
-                ? "border-blue-200 text-blue-200 cursor-not-allowed"
-                : "border-blue-400 text-blue-700 hover:bg-blue-100 hover:text-blue-600 cursor-pointer"
-            }`}
-          >
-            «
-          </button>
-        )}
-        <button
-          onClick={() => setPage((prev) => Math.max(prev - 1, 1))}
-          disabled={page === 1}
-          className={`px-4 py-2 rounded border font-semibold ${
-            page === 1
-              ? "border-blue-200 text-blue-200 cursor-not-allowed"
-              : "border-blue-400 text-blue-700 hover:bg-blue-100 hover:text-blue-600 cursor-pointer"
-          }`}
-        >
-          ‹
-        </button>
-
-        {renderPageNumbers()}
-
-        <button
-          onClick={() => setPage((prev) => Math.min(prev + 1, totalPages))}
-          disabled={page === totalPages}
-          className={`px-4 py-2 rounded border font-semibold ${
-            page === totalPages
-              ? "border-blue-200 text-blue-200 cursor-not-allowed"
-              : "border-blue-400 text-blue-700 hover:bg-blue-100 hover:text-blue-600 cursor-pointer"
-          }`}
-        >
-          ›
-        </button>
-        {page < totalPages && (
-          <button
-            onClick={() => setPage(totalPages)}
-            className="px-4 py-2 rounded border border-blue-400 text-blue-700 hover:bg-blue-100 hover:text-blue-600 font-semibold cursor-pointer"
-          >
-            »
-          </button>
-        )}
-      </div>
+      {/* Пагинация */}
+      <Pagination page={page} totalPages={totalPages} onPageChange={setPage} />
     </div>
   );
 }
