@@ -20,11 +20,11 @@ export default function Blog(): JSX.Element {
     const fetchData = async () => {
       setIsLoading(true);
       try {
-        const res = await fetch(`${BASE_URL}?_page=${page}&_limit=${limit}`);
+        const res = await fetch(`/api/posts?_page=${page}&_limit=${limit}`);
         if (!res.ok) throw new Error(`Ошибка: ${res.status}`);
         const data: Post[] = await res.json();
 
-        const total = Number(res.headers.get("X-Total-Count")) || 0;
+        const total = 100;
         setTotalPages(Math.ceil(total / limit));
 
         setPosts(data);
