@@ -28,6 +28,8 @@ async function patchPost(postId: string, data: Post) {
   return res.json();
 }
 
+
+
 export default function PostDetail({ params }: Props) {
   const { post } = use(params);
 
