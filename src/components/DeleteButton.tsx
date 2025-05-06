@@ -1,14 +1,14 @@
 "use client";
 import { BASE_URL } from "@/baseUrl";
-
 import { useRouter } from "next/navigation";
 import { Button } from "@/ui/Button";
 
 type Props = {
   postId: string;
+  onDelete?: () => void;
 };
 
-export const DeleteButton = ({ postId }: Props) => {
+export const DeleteButton = ({ postId, onDelete }: Props) => {
   const router = useRouter();
 
   const handleDelete = async () => {
@@ -19,7 +19,16 @@ export const DeleteButton = ({ postId }: Props) => {
       await fetch(`${BASE_URL}/${postId}`, {
         method: "DELETE",
       });
+
+      const deletedIds = JSON.parse(localStorage.getItem("deletedPosts") || "[]");
+      localStorage.setItem("deletedPosts", JSON.stringify([...deletedIds, postId]));
+
+      if (onDelete) {
+        onDelete();
+      }
+
       router.push("/");
+
     } catch (error) {
       console.error("Ошибка при удалении:", error);
     }
