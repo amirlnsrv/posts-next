@@ -1,20 +1,16 @@
 "use client";
 
 import React, { useReducer } from "react";
+import { Post } from "@/types/postType";
 
 import styles from "./BlogItem.module.css";
 import { Button } from "@/ui/Button";
 import { useRouter } from "next/navigation";
 
-interface BlogItemProps {
-  title: string;
-  body: string;
-  id: number;
-}
-
 type State = {
   isDeleted: boolean;
 };
+
 
 type Action = { type: "DELETE" };
 
@@ -26,9 +22,8 @@ const reducer = (state: State, action: Action): State => {
       return state;
   }
 };
-import { Post } from "@/types/postType";
 
-export const BlogItem: React.FC<BlogItemProps> = ({ title, body, id }) => {
+export const BlogItem: React.FC<Post> = ({ title, body, id }) => {
   const router = useRouter();
 
   const [state, dispatch] = useReducer(reducer, { isDeleted: false });

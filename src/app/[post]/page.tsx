@@ -27,10 +27,7 @@ export default async function PostDetail({ params: { post } }: Props) {
     <div>
       <p>{postData.title}</p>
       <p>{postData.body}</p>
-      <p>User ID: {postData.userId}</p>
-      <p>ID: {postData.id}</p>
       <DeleteButton postId={post} />
-
     </div>
   );
 }
