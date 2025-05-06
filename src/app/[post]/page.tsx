@@ -1,6 +1,7 @@
 import { BASE_URL } from "@/baseUrl";
 import { Post } from "@/types/postType";
 import React from "react";
+import { DeleteButton } from "@/components/DeleteButton";
 
 
 type Props = {
@@ -26,6 +27,7 @@ export default async function PostDetail({ params: { post } }: Props) {
     <div>
       <p>{postData.title}</p>
       <p>{postData.body}</p>
+      <DeleteButton postId={post} />
     </div>
   );
 }
