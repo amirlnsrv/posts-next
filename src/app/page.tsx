@@ -3,7 +3,6 @@
 import { BASE_URL } from "@/baseUrl";
 import React, { JSX, useEffect, useState } from "react";
 import { Loader } from "@/components/Loader";
-
 import styles from "./Home.module.css";
 import { BlogItem } from "@/components/BlogItem";
 import { Post } from "@/types/postType";
@@ -13,6 +12,8 @@ export default function Blog(): JSX.Element {
   const [posts, setPosts] = useState<Post[]>([]);
   const [totalPages, setTotalPages] = useState<number>(1);
   const [page, setPage] = useState<number>(1);
+  const [title, setTitle] = useState("");
+  const [body, setBody] = useState("");
   const limit = 20;
 
   useEffect(() => {
@@ -36,6 +37,33 @@ export default function Blog(): JSX.Element {
 
     fetchData();
   }, [page]);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (!title.trim() || !body.trim()) {
+      console.log("Заголовок или текст поста пустые");
+      return;
+    }
+    try {
+      const res = await fetch(BASE_URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(newPost),
+      });
+
+      if (!res.ok) throw new Error("Ошибка при добавлении поста");
+
+      const createdPost: Post = await res.json();
+      setPosts([createdPost, ...posts]);
+      setTitle("");
+      setBody("");
+    } catch (error) {
+      console.error("Ошибка добавления:", error);
+    }
+  };
 
   const renderPageNumbers = () => {
     const pages = [];
@@ -70,6 +98,57 @@ export default function Blog(): JSX.Element {
     <div className={styles.blog}>
       <h1 className="text-center text-3xl font-bold mb-6">Список постов</h1>
 
+      <form
+        onSubmit={async (e) => {
+          e.preventDefault();
+          if (!title.trim() || !body.trim()) return;
+
+          const newPost = {
+            title,
+            body,
+          };
+
+          try {
+            const res = await fetch("http://localhost:5000/posts", {
+              method: "POST",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(newPost),
+            });
+
+            if (!res.ok) throw new Error("Ошибка при добавлении поста");
+
+            const created = await res.json();
+            setPosts((prev) => [created, ...prev]);
+            setTitle("");
+            setBody("");
+          } catch (error) {
+            console.error("Ошибка:", error);
+          }
+        }}
+        className="flex flex-col gap-2 mb-6"
+      >
+        <input
+          className="border p-2 rounded"
+          type="text"
+          placeholder="Заголовок"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          required
+        />
+        <textarea
+          className="border p-2 rounded"
+          placeholder="Текст поста"
+          value={body}
+          onChange={(e) => setBody(e.target.value)}
+          required
+        />
+        <button className="bg-green-600 text-white p-2 rounded" type="submit">
+          Добавить пост
+        </button>
+      </form>
+
       {isLoading && <Loader />}
       {!isLoading && posts.length === 0 && (
         <p className="text-center mt-4 text-gray-500">Нет постов.</p>
@@ -88,7 +167,6 @@ export default function Blog(): JSX.Element {
         </div>
       )}
 
-      {/* Пагинация */}
       <div className="flex flex-wrap justify-center items-center gap-2 mt-8 text-lg">
         {page > 1 && (
           <button
@@ -121,7 +199,7 @@ export default function Blog(): JSX.Element {
           disabled={page === totalPages}
           className={`px-4 py-2 rounded border font-semibold ${
             page === totalPages
-              ? "border-blue-200 text-blue-200 cursor-not-allowed cok"
+              ? "border-blue-200 text-blue-200 cursor-not-allowed"
               : "border-blue-400 text-blue-700 hover:bg-blue-100 hover:text-blue-600 cursor-pointer"
           }`}
         >
