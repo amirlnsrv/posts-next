@@ -4,8 +4,8 @@ import React, { useReducer } from "react";
 import { Post } from "@/types/postType";
 
 import styles from "./BlogItem.module.css";
-import { Button } from "@/ui/Button";
 import { useRouter } from "next/navigation";
+import { DeleteButton } from "@/components/DeleteButton";
 
 type State = {
   isDeleted: boolean;
@@ -26,9 +26,6 @@ export const BlogItem: React.FC<Post> = ({ title, body, id }) => {
   const router = useRouter();
 
   const [state, dispatch] = useReducer(reducer, { isDeleted: false });
-  const handleDelete = () => {
-    dispatch({ type: "DELETE" });
-  };
   if (state.isDeleted) return null;
 
   return (
@@ -41,12 +38,10 @@ export const BlogItem: React.FC<Post> = ({ title, body, id }) => {
         <p>{body}</p>
       </div>
       <div className={styles.postButtons}>
-        <Button
-          onClick={handleDelete}
-          className="cursor-pointer bg-transparent hover:bg-red-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
-        >
-          Удалить
-        </Button>
+        <DeleteButton
+          postId={String(id)}
+          onDelete={() => dispatch({ type: "DELETE" })}
+        />
       </div>
     </div>
   );
