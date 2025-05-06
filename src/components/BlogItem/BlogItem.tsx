@@ -1,14 +1,35 @@
 "use client";
 
-import React from "react";
+import React, { useReducer } from "react";
+import { Post } from "@/types/postType";
 
 import styles from "./BlogItem.module.css";
 import { Button } from "@/ui/Button";
 import { useRouter } from "next/navigation";
-import { Post } from "@/types/postType";
+
+type State = {
+  isDeleted: boolean;
+};
+
+type Action = { type: "DELETE" };
+
+const reducer = (state: State, action: Action): State => {
+  switch (action.type) {
+    case "DELETE":
+      return { ...state, isDeleted: true };
+    default:
+      return state;
+  }
+};
 
 export const BlogItem: React.FC<Post> = ({ title, body, id }) => {
   const router = useRouter();
+
+  const [state, dispatch] = useReducer(reducer, { isDeleted: false });
+  const handleDelete = () => {
+    dispatch({ type: "DELETE" });
+  };
+  if (state.isDeleted) return null;
 
   return (
     <div className={styles.post}>
@@ -23,7 +44,10 @@ export const BlogItem: React.FC<Post> = ({ title, body, id }) => {
         <Button className="cursor-pointer bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 border border-blue-700 rounded transition duration-400">
           Изменить
         </Button>
-        <Button className="cursor-pointer bg-transparent hover:bg-red-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded transition duration-400">
+        <Button
+          onClick={handleDelete}
+          className="cursor-pointer bg-transparent hover:bg-red-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
+        >
           Удалить
         </Button>
       </div>

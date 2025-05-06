@@ -3,6 +3,10 @@
 	padding-bottom: 10px;
 }
 
+.postBody:hover h2 {
+	text-decoration: underline;
+}
+
 .post h2 {
 	font-size: 24px;
 	font-weight: 500;
