@@ -26,6 +26,7 @@ const reducer = (state: State, action: Action): State => {
       return state;
   }
 };
+import { Post } from "@/types/postType";
 
 export const BlogItem: React.FC<BlogItemProps> = ({ title, body, id }) => {
   const router = useRouter();
